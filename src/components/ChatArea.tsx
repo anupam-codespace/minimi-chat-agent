@@ -14,6 +14,7 @@ interface ChatAreaProps {
   onSelectSuggestion: (text: string) => void;
   onCitationClick: (sourceNumber: number) => void;
   activeTab?: "chat" | "voice";
+  viewMode?: "desktop" | "mobile";
 }
 
 export const ChatArea: React.FC<ChatAreaProps> = ({
@@ -24,6 +25,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   onSelectSuggestion,
   onCitationClick,
   activeTab = "chat",
+  viewMode = "mobile",
 }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -48,14 +50,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     );
   }
 
+  const containerWidthClass = viewMode === "desktop" ? "max-w-2xl" : "max-w-md";
+
   return (
     <div className="flex-1 overflow-y-auto px-5 py-3">
-      <div className="max-w-md mx-auto space-y-4">
+      <div className={`${containerWidthClass} mx-auto space-y-4`}>
         {messages.length === 0 && !isLoading ? (
           <div className="pt-3 pb-4 select-none">
             {/* Top Greeting Pill */}
             <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-700 mb-1">
-              {/* Colorful Puzzle/Gem icon from screenshot */}
               <svg
                 className="w-4 h-4 text-cyan-500 fill-current"
                 viewBox="0 0 24 24"
@@ -66,12 +69,20 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             </div>
 
             {/* Bold Headline */}
-            <h2 className="text-[26px] font-extrabold text-slate-900 text-center tracking-tight mb-5">
+            <h2
+              className={`font-extrabold text-slate-900 text-center tracking-tight mb-5 ${
+                viewMode === "desktop" ? "text-3xl" : "text-[26px]"
+              }`}
+            >
               How can I help?
             </h2>
 
             {/* 2x2 Grid matching screenshot */}
-            <div className="grid grid-cols-2 gap-3">
+            <div
+              className={`grid grid-cols-2 ${
+                viewMode === "desktop" ? "gap-4 max-w-xl mx-auto" : "gap-3"
+              }`}
+            >
               {/* Card 1: Top Left (Pink Graduation Cap) */}
               <button
                 onClick={() =>
@@ -82,8 +93,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
               >
                 <div className="text-xl mb-2">🎓</div>
-                <div className="text-xs font-semibold text-[#8a4235] leading-snug group-hover:text-[#6a2f24] transition-colors">
-                  Practice an interview question with me
+                <div>
+                  <div className="text-xs font-semibold text-[#8a4235] leading-snug group-hover:text-[#6a2f24] transition-colors">
+                    Practice an interview question with me
+                  </div>
+                  {viewMode === "desktop" && (
+                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
+                      Test 1: CRM pricing since Monday
+                    </div>
+                  )}
                 </div>
               </button>
 
@@ -97,8 +115,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
               >
                 <div className="text-xl mb-2">🚀</div>
-                <div className="text-xs font-semibold text-[#1d558a] leading-snug group-hover:text-[#133d64] transition-colors">
-                  What drill should I try next?
+                <div>
+                  <div className="text-xs font-semibold text-[#1d558a] leading-snug group-hover:text-[#133d64] transition-colors">
+                    What drill should I try next?
+                  </div>
+                  {viewMode === "desktop" && (
+                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
+                      Test 2: 3 Nov model pricing validity
+                    </div>
+                  )}
                 </div>
               </button>
 
@@ -112,8 +137,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
               >
                 <div className="text-xl mb-2">😆</div>
-                <div className="text-xs font-semibold text-[#244c7d] leading-snug group-hover:text-[#183457] transition-colors">
-                  Tips for sounding more confident
+                <div>
+                  <div className="text-xs font-semibold text-[#244c7d] leading-snug group-hover:text-[#183457] transition-colors">
+                    Tips for sounding more confident
+                  </div>
+                  {viewMode === "desktop" && (
+                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
+                      Test 3: Postgres hosting last Tuesday
+                    </div>
+                  )}
                 </div>
               </button>
 
@@ -127,8 +159,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
               >
                 <div className="text-xl mb-2">🎯</div>
-                <div className="text-xs font-semibold text-[#945228] leading-snug group-hover:text-[#6e3b1c] transition-colors">
-                  How&apos;s my progress looking?
+                <div>
+                  <div className="text-xs font-semibold text-[#945228] leading-snug group-hover:text-[#6e3b1c] transition-colors">
+                    How&apos;s my progress looking?
+                  </div>
+                  {viewMode === "desktop" && (
+                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
+                      Multi-entity comparative research
+                    </div>
+                  )}
                 </div>
               </button>
             </div>

@@ -8,7 +8,7 @@ import { InputArea } from "@/components/InputArea";
 import { Sidebar } from "@/components/Sidebar";
 import { SourceDrawer } from "@/components/SourceDrawer";
 import { SettingsModal } from "@/components/SettingsModal";
-import { Maximize2, Minimize2 } from "lucide-react";
+import { Monitor, Smartphone } from "lucide-react";
 
 export default function MinimiApp() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -23,7 +23,7 @@ export default function MinimiApp() {
   const [isSourceDrawerOpen, setIsSourceDrawerOpen] = useState(false);
   const [highlightedSourceIndex, setHighlightedSourceIndex] = useState<number | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isFullWidth, setIsFullWidth] = useState(false);
+  const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
 
   // Load conversations
   const loadConversations = useCallback(async () => {
@@ -230,36 +230,48 @@ export default function MinimiApp() {
     }, 150);
   };
 
-  return (
-    <div className="min-h-screen w-full bg-slate-200/80 flex items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden relative">
-      {/* Desktop expand/collapse toggle pill */}
-      <button
-        onClick={() => setIsFullWidth(!isFullWidth)}
-        className="hidden md:flex items-center gap-1.5 fixed top-4 right-4 z-40 bg-white/80 hover:bg-white text-slate-700 px-3 py-1.5 rounded-full shadow-xs text-xs font-medium border border-slate-200 transition-all"
-        title="Toggle view mode"
-      >
-        {isFullWidth ? (
-          <>
-            <Minimize2 className="w-3.5 h-3.5" />
-            <span>Mobile Mockup</span>
-          </>
-        ) : (
-          <>
-            <Maximize2 className="w-3.5 h-3.5" />
-            <span>Expand Full</span>
-          </>
-        )}
-      </button>
+  const toggleViewMode = () => {
+    setViewMode((prev) => (prev === "desktop" ? "mobile" : "desktop"));
+  };
 
-      {/* Main Viewport Container */}
+  return (
+    <div className="min-h-screen w-full bg-slate-200/90 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:16px_16px] flex items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden relative">
+      {/* Floating Top Viewport Switcher */}
+      <div className="hidden md:flex items-center gap-1.5 fixed top-4 right-4 z-40 bg-white/90 backdrop-blur-md text-slate-700 px-3 py-1.5 rounded-full shadow-md text-xs font-medium border border-slate-200/80 transition-all">
+        <span className="text-[11px] text-slate-400 font-mono mr-1">Preview:</span>
+        <button
+          onClick={() => setViewMode("desktop")}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
+            viewMode === "desktop"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+          }`}
+        >
+          <Monitor className="w-3.5 h-3.5" />
+          <span>Desktop Studio</span>
+        </button>
+        <button
+          onClick={() => setViewMode("mobile")}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
+            viewMode === "mobile"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+          }`}
+        >
+          <Smartphone className="w-3.5 h-3.5" />
+          <span>Mobile Mockup</span>
+        </button>
+      </div>
+
+      {/* Main Container */}
       <div
         className={`w-full h-full transition-all duration-300 relative overflow-hidden flex flex-col ${
-          isFullWidth
-            ? "max-w-4xl h-[94vh] rounded-3xl shadow-2xl border border-slate-300 bg-white"
-            : "max-w-[400px] h-[100dvh] sm:h-[844px] sm:rounded-[48px] sm:border-[10px] sm:border-black sm:shadow-[0_25px_70px_rgba(0,0,0,0.3)] bg-white"
+          viewMode === "desktop"
+            ? "max-w-5xl h-[94vh] rounded-3xl shadow-[0_20px_70px_rgba(0,0,0,0.18)] border border-slate-300/80 bg-white"
+            : "max-w-[400px] h-[100dvh] sm:h-[844px] sm:rounded-[48px] sm:border-[10px] sm:border-slate-950 sm:shadow-[0_25px_80px_rgba(0,0,0,0.38)] bg-white"
         }`}
       >
-        {/* Sky gradient background canvas */}
+        {/* Pastel sky gradient background canvas matching screenshot */}
         <div className="sky-gradient-bg absolute inset-0 z-0 pointer-events-none" />
 
         {/* Top Header & Status Bar */}
@@ -268,7 +280,11 @@ export default function MinimiApp() {
           onTabChange={setActiveTab}
           onResetChat={handleNewChat}
           onOpenHistory={() => setIsHistoryOpen(true)}
+          onOpenSources={() => setIsSourceDrawerOpen(true)}
+          onOpenSettings={() => setIsSettingsOpen(true)}
           sourceCount={currentSources.length}
+          viewMode={viewMode}
+          onToggleViewMode={toggleViewMode}
         />
 
         {/* Chat / Hero Area */}
@@ -280,6 +296,7 @@ export default function MinimiApp() {
           onSelectSuggestion={(prompt) => handleSendMessage(prompt)}
           onCitationClick={handleCitationClick}
           activeTab={activeTab}
+          viewMode={viewMode}
         />
 
         {/* Bottom Floating Pill Input */}
@@ -287,7 +304,15 @@ export default function MinimiApp() {
           onSendMessage={handleSendMessage}
           isLoading={isLoading}
           onOpenSettings={() => setIsSettingsOpen(true)}
+          viewMode={viewMode}
         />
+
+        {/* iOS Home Indicator Bar (Only in mobile mode) */}
+        {viewMode === "mobile" && (
+          <div className="w-full flex justify-center pb-2 z-20 shrink-0 select-none">
+            <div className="w-32 h-1 bg-slate-900/35 rounded-full" />
+          </div>
+        )}
 
         {/* History Drawer */}
         <Sidebar
