@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #090d16;
+  --foreground: #f8fafc;
+  --border: #1e293b;
+}
+
+.doto-minimi,
+.font-doto {
+  font-family: "Doto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 601;
+  font-style: normal;
+  font-variation-settings:
+    "ROND" 100;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Markdown styling inside assistant message */
+.prose-dark {
+  color: #e2e8f0;
+  line-height: 1.7;
+}
+
+.prose-dark h1,
+.prose-dark h2,
+.prose-dark h3,
+.prose-dark h4 {
+  color: #f8fafc;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-dark h2 {
+  font-size: 1.25rem;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 0.35rem;
+}
+
+.prose-dark h3 {
+  font-size: 1.1rem;
+}
+
+.prose-dark p {
+  margin-bottom: 0.85rem;
+}
+
+.prose-dark ul,
+.prose-dark ol {
+  margin-left: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.prose-dark li {
+  margin-bottom: 0.25rem;
+}
+
+.prose-dark code {
+  background: #1e293b;
+  color: #a5b4fc;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.prose-dark pre {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  padding: 0.85rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.prose-dark blockquote {
+  border-left: 3px solid #6366f1;
+  padding-left: 0.85rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin-bottom: 0.85rem;
+}
+
+.prose-dark table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+}
+
+.prose-dark th {
+  background: #1e293b;
+  color: #f1f5f9;
+  font-weight: 600;
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  border: 1px solid #334155;
+}
+
+.prose-dark td {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+}
+
+.prose-dark tr:nth-child(even) {
+  background: rgba(30, 41, 59, 0.4);
+}
+

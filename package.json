@@ -1,0 +1,49 @@
+{
+  "name": "minimi-chat-agent",
+  "version": "1.0.0",
+  "description": "Production-grade AI Web Research and Temporal Comparison Agent",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:setup": "node -r ts-node/register/transpile-only ./src/lib/db/migrate.ts || tsx ./src/lib/db/migrate.ts || npx tsx ./src/lib/db/migrate.ts",
+    "db:seed": "node -r ts-node/register/transpile-only ./src/lib/db/seed.ts || tsx ./src/lib/db/seed.ts || npx tsx ./src/lib/db/seed.ts"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "research",
+    "temporal-comparison",
+    "web-search",
+    "nextjs",
+    "typescript"
+  ],
+  "author": "Minimi Team",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^3.6.0",
+    "lucide-react": "^0.468.0",
+    "next": "^16.4.6",
+    "pg": "^8.13.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/pg": "^8.11.10",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwind-merge": "^2.6.1",
+    "tailwindcss": "^3.4.16",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}
