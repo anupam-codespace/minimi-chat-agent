@@ -8,7 +8,6 @@ import { InputArea } from "@/components/InputArea";
 import { Sidebar } from "@/components/Sidebar";
 import { SourceDrawer } from "@/components/SourceDrawer";
 import { SettingsModal } from "@/components/SettingsModal";
-import { Monitor, Smartphone } from "lucide-react";
 
 export default function MinimiApp() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -19,11 +18,11 @@ export default function MinimiApp() {
   const [streamingText, setStreamingText] = useState("");
   const [currentSources, setCurrentSources] = useState<Source[]>([]);
   const [activeTab, setActiveTab] = useState<"chat" | "voice">("chat");
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(true);
   const [isSourceDrawerOpen, setIsSourceDrawerOpen] = useState(false);
   const [highlightedSourceIndex, setHighlightedSourceIndex] = useState<number | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
 
   // Load conversations
   const loadConversations = useCallback(async () => {
@@ -230,64 +229,53 @@ export default function MinimiApp() {
     }, 150);
   };
 
-  const toggleViewMode = () => {
-    setViewMode((prev) => (prev === "desktop" ? "mobile" : "desktop"));
+  const handleToggleSidebar = () => {
+    // If on mobile viewport, toggle mobile drawer; if on desktop, toggle desktop sidebar
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setIsMobileSidebarOpen((prev) => !prev);
+    } else {
+      setIsDesktopSidebarOpen((prev) => !prev);
+    }
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-200/90 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:16px_16px] flex items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden relative">
-      {/* Floating Top Viewport Switcher */}
-      <div className="hidden md:flex items-center gap-1.5 fixed top-4 right-4 z-40 bg-white/90 backdrop-blur-md text-slate-700 px-3 py-1.5 rounded-full shadow-md text-xs font-medium border border-slate-200/80 transition-all">
-        <span className="text-[11px] text-slate-400 font-mono mr-1">Preview:</span>
-        <button
-          onClick={() => setViewMode("desktop")}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
-            viewMode === "desktop"
-              ? "bg-blue-600 text-white shadow-xs"
-              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-          }`}
-        >
-          <Monitor className="w-3.5 h-3.5" />
-          <span>Desktop Studio</span>
-        </button>
-        <button
-          onClick={() => setViewMode("mobile")}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
-            viewMode === "mobile"
-              ? "bg-blue-600 text-white shadow-xs"
-              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-          }`}
-        >
-          <Smartphone className="w-3.5 h-3.5" />
-          <span>Mobile Mockup</span>
-        </button>
-      </div>
+    <div className="h-screen w-full flex overflow-hidden bg-slate-50 relative">
+      {/* Desktop Persistent / Collapsible Sidebar & Mobile Drawer */}
+      <Sidebar
+        conversations={conversations}
+        activeConversationId={activeConversationId}
+        onSelectConversation={(id) => setActiveConversationId(id)}
+        onNewChat={handleNewChat}
+        onDeleteConversation={handleDeleteConversation}
+        onSelectBenchmark={(prompt) => {
+          handleNewChat();
+          handleSendMessage(prompt);
+        }}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        isOpenMobile={isMobileSidebarOpen}
+        onCloseMobile={() => setIsMobileSidebarOpen(false)}
+        isDesktopOpen={isDesktopSidebarOpen}
+        onToggleDesktop={() => setIsDesktopSidebarOpen(false)}
+      />
 
-      {/* Main Container */}
-      <div
-        className={`w-full h-full transition-all duration-300 relative overflow-hidden flex flex-col ${
-          viewMode === "desktop"
-            ? "max-w-5xl h-[94vh] rounded-3xl shadow-[0_20px_70px_rgba(0,0,0,0.18)] border border-slate-300/80 bg-white"
-            : "max-w-[400px] h-[100dvh] sm:h-[844px] sm:rounded-[48px] sm:border-[10px] sm:border-slate-950 sm:shadow-[0_25px_80px_rgba(0,0,0,0.38)] bg-white"
-        }`}
-      >
-        {/* Pastel sky gradient background canvas matching screenshot */}
-        <div className="sky-gradient-bg absolute inset-0 z-0 pointer-events-none" />
+      {/* Main Chat Workspace */}
+      <main className="flex-1 h-full flex flex-col relative overflow-hidden bg-white">
+        {/* Subtle Pastel Sky Ambient Backdrop */}
+        <div className="sky-gradient-bg absolute inset-0 z-0 pointer-events-none opacity-40" />
 
-        {/* Top Header & Status Bar */}
+        {/* Top Header */}
         <Header
           activeTab={activeTab}
           onTabChange={setActiveTab}
           onResetChat={handleNewChat}
-          onOpenHistory={() => setIsHistoryOpen(true)}
+          onToggleSidebar={handleToggleSidebar}
           onOpenSources={() => setIsSourceDrawerOpen(true)}
           onOpenSettings={() => setIsSettingsOpen(true)}
           sourceCount={currentSources.length}
-          viewMode={viewMode}
-          onToggleViewMode={toggleViewMode}
+          isDesktopSidebarOpen={isDesktopSidebarOpen}
         />
 
-        {/* Chat / Hero Area */}
+        {/* Chat Feed */}
         <ChatArea
           messages={messages}
           isLoading={isLoading}
@@ -296,58 +284,33 @@ export default function MinimiApp() {
           onSelectSuggestion={(prompt) => handleSendMessage(prompt)}
           onCitationClick={handleCitationClick}
           activeTab={activeTab}
-          viewMode={viewMode}
         />
 
-        {/* Bottom Floating Pill Input */}
+        {/* Bottom Pinned Input Area */}
         <InputArea
           onSendMessage={handleSendMessage}
           isLoading={isLoading}
           onOpenSettings={() => setIsSettingsOpen(true)}
-          viewMode={viewMode}
         />
+      </main>
 
-        {/* iOS Home Indicator Bar (Only in mobile mode) */}
-        {viewMode === "mobile" && (
-          <div className="w-full flex justify-center pb-2 z-20 shrink-0 select-none">
-            <div className="w-32 h-1 bg-slate-900/35 rounded-full" />
-          </div>
-        )}
+      {/* Sources Drawer */}
+      <SourceDrawer
+        isOpen={isSourceDrawerOpen}
+        onClose={() => setIsSourceDrawerOpen(false)}
+        sources={currentSources}
+        highlightedIndex={highlightedSourceIndex}
+      />
 
-        {/* History Drawer */}
-        <Sidebar
-          conversations={conversations}
-          activeConversationId={activeConversationId}
-          onSelectConversation={(id) => setActiveConversationId(id)}
-          onNewChat={handleNewChat}
-          onDeleteConversation={handleDeleteConversation}
-          onSelectBenchmark={(prompt) => {
-            handleNewChat();
-            handleSendMessage(prompt);
-          }}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-          isOpenMobile={isHistoryOpen}
-          onCloseMobile={() => setIsHistoryOpen(false)}
-        />
-
-        {/* Sources Drawer */}
-        <SourceDrawer
-          isOpen={isSourceDrawerOpen}
-          onClose={() => setIsSourceDrawerOpen(false)}
-          sources={currentSources}
-          highlightedIndex={highlightedSourceIndex}
-        />
-
-        {/* Settings Modal */}
-        <SettingsModal
-          isOpen={isSettingsOpen}
-          onClose={() => setIsSettingsOpen(false)}
-          onRefreshData={() => {
-            loadConversations();
-            if (activeConversationId) loadConversationDetails(activeConversationId);
-          }}
-        />
-      </div>
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onRefreshData={() => {
+          loadConversations();
+          if (activeConversationId) loadConversationDetails(activeConversationId);
+        }}
+      />
     </div>
   );
 }

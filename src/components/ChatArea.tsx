@@ -4,7 +4,16 @@ import React, { useEffect, useRef } from "react";
 import { Message, Source } from "@/types";
 import { MarkdownView } from "./MarkdownView";
 import { ComparisonMatrix } from "./ComparisonMatrix";
-import { Loader2, Mic } from "lucide-react";
+import {
+  Loader2,
+  Mic,
+  GraduationCap,
+  Rocket,
+  Sparkles,
+  Compass,
+  Bot,
+  ExternalLink,
+} from "lucide-react";
 
 interface ChatAreaProps {
   messages: Message[];
@@ -14,7 +23,6 @@ interface ChatAreaProps {
   onSelectSuggestion: (text: string) => void;
   onCitationClick: (sourceNumber: number) => void;
   activeTab?: "chat" | "voice";
-  viewMode?: "desktop" | "mobile";
 }
 
 export const ChatArea: React.FC<ChatAreaProps> = ({
@@ -25,7 +33,6 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
   onSelectSuggestion,
   onCitationClick,
   activeTab = "chat",
-  viewMode = "mobile",
 }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -37,145 +44,131 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center select-none">
         <div className="relative mb-8">
-          <div className="w-28 h-28 rounded-full bg-blue-100 animate-ping absolute inset-0 opacity-40" />
-          <div className="w-28 h-28 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/20 text-white relative z-10">
-            <Mic className="w-12 h-12" />
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-blue-100 animate-ping absolute inset-0 opacity-40" />
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-linear-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/20 text-white relative z-10">
+            <Mic className="w-10 h-10 sm:w-12 sm:h-12" />
           </div>
         </div>
-        <h3 className="text-xl font-bold text-slate-900 mb-2">Listening...</h3>
-        <p className="text-xs text-slate-500 max-w-xs">
-          Ask Minimi any web research or temporal pricing comparison question.
+        <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">Voice Assistant Active</h3>
+        <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
+          Ask Minimi any live web research or temporal pricing comparison question.
         </p>
       </div>
     );
   }
 
-  const containerWidthClass = viewMode === "desktop" ? "max-w-2xl" : "max-w-md";
-
   return (
-    <div className="flex-1 overflow-y-auto px-5 py-3">
-      <div className={`${containerWidthClass} mx-auto space-y-4`}>
+    <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 md:py-6">
+      <div className="max-w-3xl mx-auto space-y-5">
         {messages.length === 0 && !isLoading ? (
-          <div className="pt-3 pb-4 select-none">
+          <div className="pt-4 sm:pt-8 pb-4 select-none">
             {/* Top Greeting Pill */}
-            <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-700 mb-1">
-              <svg
-                className="w-4 h-4 text-cyan-500 fill-current"
-                viewBox="0 0 24 24"
-              >
-                <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5z" />
-              </svg>
-              <span>Good afternoon! Samson</span>
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-600 mb-2">
+              <span className="w-6 h-6 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
+                <Bot className="w-3.5 h-3.5" />
+              </span>
+              <span>Good afternoon, Samson</span>
             </div>
 
             {/* Bold Headline */}
-            <h2
-              className={`font-extrabold text-slate-900 text-center tracking-tight mb-5 ${
-                viewMode === "desktop" ? "text-3xl" : "text-[26px]"
-              }`}
-            >
+            <h2 className="font-doto text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 text-center tracking-tight mb-6">
               How can I help?
             </h2>
 
-            {/* 2x2 Grid matching screenshot */}
-            <div
-              className={`grid grid-cols-2 ${
-                viewMode === "desktop" ? "gap-4 max-w-xl mx-auto" : "gap-3"
-              }`}
-            >
-              {/* Card 1: Top Left (Pink Graduation Cap) */}
+            {/* 2x2 Clean Vector Icon Prompt Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+              {/* Card 1: Top Left */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
                     "On Monday we shortlisted 5 CRM tools for a 20-person sales team. Has any of them changed pricing or shipped something big since?"
                   )
                 }
-                className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="text-xl mb-2">🎓</div>
+                <div className="w-9 h-9 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 mb-3 group-hover:scale-105 transition-transform">
+                  <GraduationCap className="w-5 h-5" />
+                </div>
                 <div>
-                  <div className="text-xs font-semibold text-[#8a4235] leading-snug group-hover:text-[#6a2f24] transition-colors">
+                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
                     Practice an interview question with me
                   </div>
-                  {viewMode === "desktop" && (
-                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
-                      Test 1: CRM pricing since Monday
-                    </div>
-                  )}
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    Temporal Benchmark 1: CRM pricing delta since Monday
+                  </div>
                 </div>
               </button>
 
-              {/* Card 2: Top Right (Blue Rocket) */}
+              {/* Card 2: Top Right */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
                     "What did I ask you on 3 November? Is your answer still correct today?"
                   )
                 }
-                className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="text-xl mb-2">🚀</div>
+                <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mb-3 group-hover:scale-105 transition-transform">
+                  <Rocket className="w-5 h-5" />
+                </div>
                 <div>
-                  <div className="text-xs font-semibold text-[#1d558a] leading-snug group-hover:text-[#133d64] transition-colors">
+                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
                     What drill should I try next?
                   </div>
-                  {viewMode === "desktop" && (
-                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
-                      Test 2: 3 Nov model pricing validity
-                    </div>
-                  )}
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    Temporal Benchmark 2: 3 Nov model pricing validity
+                  </div>
                 </div>
               </button>
 
-              {/* Card 3: Bottom Left (Pink Grinning Face) */}
+              {/* Card 3: Bottom Left */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
                     "Last Tuesday I asked you about Postgres hosting. Has any pricing changed since then?"
                   )
                 }
-                className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="text-xl mb-2">😆</div>
+                <div className="w-9 h-9 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center text-violet-600 mb-3 group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-5 h-5" />
+                </div>
                 <div>
-                  <div className="text-xs font-semibold text-[#244c7d] leading-snug group-hover:text-[#183457] transition-colors">
+                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
                     Tips for sounding more confident
                   </div>
-                  {viewMode === "desktop" && (
-                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
-                      Test 3: Postgres hosting last Tuesday
-                    </div>
-                  )}
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    Temporal Benchmark 3: Postgres hosting delta since last Tuesday
+                  </div>
                 </div>
               </button>
 
-              {/* Card 4: Bottom Right (Golden Spiral / Target) */}
+              {/* Card 4: Bottom Right */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
                     "Compare Supabase vs Neon vs AWS RDS pricing and features for 50GB storage"
                   )
                 }
-                className="text-left bg-white/75 hover:bg-white/95 active:scale-[0.98] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-white/80 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="text-xl mb-2">🎯</div>
+                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 mb-3 group-hover:scale-105 transition-transform">
+                  <Compass className="w-5 h-5" />
+                </div>
                 <div>
-                  <div className="text-xs font-semibold text-[#945228] leading-snug group-hover:text-[#6e3b1c] transition-colors">
-                    How&apos;s my progress looking?
+                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
+                    How is my progress looking?
                   </div>
-                  {viewMode === "desktop" && (
-                    <div className="text-[10px] text-slate-400 mt-1 font-mono">
-                      Multi-entity comparative research
-                    </div>
-                  )}
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    Multi-entity comparative web research & matrix synthesis
+                  </div>
                 </div>
               </button>
             </div>
 
-            {/* Intro text from screenshot */}
-            <p className="text-[11px] text-slate-500 text-center max-w-[250px] mx-auto mt-6 leading-relaxed font-normal">
-              I&apos;m Echo, your AI communication coach. I&apos;m in early preview. More
-              capabilities coming soon
+            {/* Intro text */}
+            <p className="text-[11px] text-slate-500 text-center max-w-sm mx-auto mt-6 leading-relaxed font-normal">
+              I am Echo, your AI research and temporal comparison assistant. Live web search and zero-hallucination verification are active.
             </p>
           </div>
         ) : null}
@@ -189,10 +182,10 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             }`}
           >
             <div
-              className={`text-xs leading-relaxed ${
+              className={`text-xs sm:text-sm leading-relaxed ${
                 msg.role === "user"
-                  ? "bg-[#2563eb] text-white rounded-2xl rounded-br-xs px-4 py-2.5 max-w-[85%] shadow-xs"
-                  : "bg-white/90 backdrop-blur-md text-slate-800 rounded-2xl rounded-bl-xs p-4 max-w-[92%] shadow-xs border border-white/80"
+                  ? "bg-blue-600 text-white rounded-2xl rounded-br-xs px-4 py-3 max-w-[85%] sm:max-w-[75%] shadow-xs"
+                  : "bg-white/95 backdrop-blur-md text-slate-800 rounded-2xl rounded-bl-xs p-4 sm:p-5 w-full shadow-xs border border-slate-200/80"
               }`}
             >
               {msg.role === "user" ? (
@@ -210,17 +203,19 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                     onCitationClick={onCitationClick}
                   />
                   {msg.sources && msg.sources.length > 0 && (
-                    <div className="mt-3 pt-2.5 border-t border-slate-200/80 flex flex-wrap items-center gap-1.5 text-[11px] text-slate-500">
-                      <span className="font-semibold text-slate-600 text-[10px] uppercase mr-0.5">
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
+                      <span className="font-semibold text-slate-600 text-[11px] uppercase tracking-wider mr-1">
                         Sources:
                       </span>
                       {msg.sources.map((s: Source, idx: number) => (
                         <button
                           key={s.id || idx}
                           onClick={() => onCitationClick(idx + 1)}
-                          className="px-2 py-0.5 rounded-full text-[10px] bg-blue-50 text-blue-600 border border-blue-200/60 hover:bg-blue-100 transition-colors"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 hover:border-blue-200 transition-colors"
                         >
-                          [{idx + 1}] {s.domain}
+                          <span className="font-mono font-medium">[{idx + 1}]</span>
+                          <span className="truncate max-w-[120px]">{s.domain}</span>
+                          <ExternalLink className="w-2.5 h-2.5 opacity-60" />
                         </button>
                       ))}
                     </div>
@@ -233,11 +228,11 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
         {/* Loading / Streaming State */}
         {isLoading && (
-          <div className="flex flex-col items-start">
-            <div className="bg-white/90 backdrop-blur-md text-slate-800 rounded-2xl rounded-bl-xs p-4 max-w-[92%] shadow-xs border border-white/80 space-y-2.5">
+          <div className="flex flex-col items-start w-full">
+            <div className="bg-white/95 backdrop-blur-md text-slate-800 rounded-2xl rounded-bl-xs p-4 sm:p-5 w-full shadow-xs border border-slate-200/80 space-y-3">
               {activeStatusMessage && (
-                <div className="flex items-center gap-2 text-[11px] text-blue-600 bg-blue-50/80 px-2.5 py-1.5 rounded-lg border border-blue-200/50">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <div className="inline-flex items-center gap-2 text-xs text-blue-700 bg-blue-50/90 px-3 py-1.5 rounded-lg border border-blue-200/60 font-medium">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
                   <span>{activeStatusMessage}</span>
                 </div>
               )}
@@ -248,9 +243,9 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                   onCitationClick={onCitationClick}
                 />
               ) : (
-                <div className="flex items-center gap-2 text-slate-500 text-xs py-1">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
-                  <span>Synthesizing response...</span>
+                <div className="flex items-center gap-2 text-slate-500 text-xs py-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                  <span>Synthesizing verified research response...</span>
                 </div>
               )}
             </div>
