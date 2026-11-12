@@ -1,111 +1,98 @@
 "use client";
 
 import React from "react";
-import { Menu, ShieldCheck, Settings } from "lucide-react";
-import { IntentType } from "@/types";
+import { MessageSquare, Mic, Clock, X, Wifi, Battery } from "lucide-react";
 
 interface HeaderProps {
-  title: string;
-  activeIntent?: IntentType;
-  sourceCount: number;
-  onOpenSources: () => void;
-  onOpenSettings: () => void;
-  onToggleMobileMenu: () => void;
+  activeTab: "chat" | "voice";
+  onTabChange: (tab: "chat" | "voice") => void;
+  onResetChat: () => void;
+  onOpenHistory: () => void;
+  onOpenSources?: () => void;
+  sourceCount?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  title,
-  activeIntent,
-  sourceCount,
-  onOpenSources,
-  onOpenSettings,
-  onToggleMobileMenu,
+  activeTab,
+  onTabChange,
+  onResetChat,
+  onOpenHistory,
 }) => {
-  const getIntentBadge = (intent?: IntentType) => {
-    if (!intent) return null;
-    const labels: Record<IntentType, { text: string; bg: string; textCol: string }> = {
-      temporal_comparison: {
-        text: "Temporal Comparison",
-        bg: "bg-indigo-950/80 border-indigo-800",
-        textCol: "text-indigo-300",
-      },
-      current_web_research: {
-        text: "Live Web Research",
-        bg: "bg-emerald-950/80 border-emerald-800",
-        textCol: "text-emerald-300",
-      },
-      historical_retrieval: {
-        text: "Historical Retrieval",
-        bg: "bg-sky-950/80 border-sky-800",
-        textCol: "text-sky-300",
-      },
-      multi_entity_comparison: {
-        text: "Entity Comparison",
-        bg: "bg-purple-950/80 border-purple-800",
-        textCol: "text-purple-300",
-      },
-      follow_up_research: {
-        text: "Follow-up",
-        bg: "bg-slate-800 border-slate-700",
-        textCol: "text-slate-300",
-      },
-      general_conversation: {
-        text: "General Assistant",
-        bg: "bg-slate-800 border-slate-700",
-        textCol: "text-slate-300",
-      },
-    };
-
-    const config = labels[intent] || labels.general_conversation;
-    return (
-      <span
-        className={`font-doto px-2 py-0.5 rounded-full text-[10px] font-semibold border tracking-wider ${config.bg} ${config.textCol}`}
-      >
-        {config.text}
-      </span>
-    );
-  };
-
   return (
-    <header className="h-14 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md px-4 flex items-center justify-between z-10 shrink-0">
-      <div className="flex items-center gap-3 overflow-hidden">
-        <button
-          onClick={onToggleMobileMenu}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 lg:hidden"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
+    <header className="pt-2.5 pb-2 px-5 z-20 shrink-0 select-none">
+      {/* iOS Status Bar */}
+      <div className="flex items-center justify-between text-xs font-semibold text-slate-800 mb-2 px-1">
+        <span className="font-doto tracking-tight text-[13px]">9:41</span>
 
-        <div className="flex items-center gap-2 overflow-hidden">
-          <h1 className="text-sm font-semibold text-slate-200 truncate">
-            {title || "New Research Session"}
-          </h1>
-          {getIntentBadge(activeIntent)}
+        {/* Dynamic Island Capsule */}
+        <div className="w-24 h-5 bg-black rounded-full shadow-inner flex items-center justify-end pr-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-800" />
+        </div>
+
+        {/* Signal, WiFi, Battery */}
+        <div className="flex items-center gap-1.5 text-slate-800 text-[11px]">
+          <div className="flex items-end gap-0.5 h-3">
+            <span className="w-0.5 h-1 bg-slate-800 rounded-sm" />
+            <span className="w-0.5 h-1.5 bg-slate-800 rounded-sm" />
+            <span className="w-0.5 h-2 bg-slate-800 rounded-sm" />
+            <span className="w-0.5 h-2.5 bg-slate-800 rounded-sm" />
+          </div>
+          <Wifi className="w-3.5 h-3.5" />
+          <div className="flex items-center">
+            <div className="w-4 h-2.5 border border-slate-800 rounded-sm p-0.5 flex items-center">
+              <div className="w-full h-full bg-slate-800 rounded-2xs" />
+            </div>
+            <div className="w-0.5 h-1 bg-slate-800 rounded-r-xs" />
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 shrink-0">
+      {/* Main Top Navigation Row */}
+      <div className="flex items-center justify-between pt-1">
+        {/* Left: Close / Reset Button */}
         <button
-          onClick={onOpenSources}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs transition-colors"
-          title="Inspect Sources & Citations"
+          onClick={onResetChat}
+          className="w-8 h-8 rounded-full bg-white/70 hover:bg-white text-slate-500 hover:text-slate-800 flex items-center justify-center shadow-xs border border-white/60 transition-all active:scale-95"
+          title="New Chat / Reset"
         >
-          <ShieldCheck className="w-4 h-4 text-indigo-400" />
-          <span className="hidden sm:inline">Sources</span>
-          <span className="px-1.5 py-0.2 rounded-full bg-slate-800 text-[10px] font-mono text-indigo-300">
-            {sourceCount}
-          </span>
+          <X className="w-4 h-4" />
         </button>
 
+        {/* Center: Segmented Switch Pill (Chat / Voice) */}
+        <div className="flex items-center bg-slate-200/50 backdrop-blur-sm p-0.5 rounded-full border border-slate-300/40 shadow-2xs">
+          <button
+            onClick={() => onTabChange("chat")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+              activeTab === "chat"
+                ? "bg-white text-blue-600 shadow-xs"
+                : "text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5 fill-current" />
+            <span>Chat</span>
+          </button>
+          <button
+            onClick={() => onTabChange("voice")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all ${
+              activeTab === "voice"
+                ? "bg-white text-blue-600 shadow-xs"
+                : "text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <Mic className="w-3.5 h-3.5" />
+            <span>Voice</span>
+          </button>
+        </div>
+
+        {/* Right: History Clock Button */}
         <button
-          onClick={onOpenSettings}
-          className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
-          title="Architecture & Settings"
+          onClick={onOpenHistory}
+          className="w-8 h-8 rounded-full bg-white/70 hover:bg-white text-slate-500 hover:text-slate-800 flex items-center justify-center shadow-xs border border-white/60 transition-all active:scale-95"
+          title="Conversation History"
         >
-          <Settings className="w-4 h-4" />
+          <Clock className="w-4 h-4" />
         </button>
       </div>
     </header>
   );
 };
-

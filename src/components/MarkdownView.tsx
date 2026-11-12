@@ -11,7 +11,6 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
   content,
   onCitationClick,
 }) => {
-  // Render text segments and parse [1], [2] citations into interactive buttons
   const renderFormattedText = (text: string) => {
     // Split by citation markers like [1], [2], [10]
     const parts = text.split(/(\[\d+\])/g);
@@ -24,7 +23,7 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
           <button
             key={idx}
             onClick={() => onCitationClick?.(citeIndex)}
-            className="inline-flex items-center justify-center px-1.5 py-0.2 rounded-full text-xs font-semibold bg-indigo-950/80 text-indigo-300 border border-indigo-800/80 hover:bg-indigo-900 hover:text-indigo-200 transition-colors mx-0.5 align-baseline"
+            className="inline-flex items-center justify-center px-1.5 py-0.2 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-600 border border-blue-200/80 hover:bg-blue-100 transition-colors mx-0.5 align-baseline"
             title={`View Source [${citeIndex}]`}
           >
             {part}
@@ -37,7 +36,7 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
       return boldParts.map((bp, bidx) => {
         if (bp.startsWith("**") && bp.endsWith("**")) {
           return (
-            <strong key={`${idx}-${bidx}`} className="text-slate-100 font-semibold">
+            <strong key={`${idx}-${bidx}`} className="text-slate-900 font-semibold">
               {bp.slice(2, -2)}
             </strong>
           );
@@ -50,7 +49,7 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
             return (
               <code
                 key={`${idx}-${bidx}-${cidx}`}
-                className="bg-slate-800/80 text-indigo-300 px-1.5 py-0.5 rounded text-xs font-mono"
+                className="bg-slate-100 text-blue-600 px-1 py-0.5 rounded text-[11px] font-mono"
               >
                 {cp.slice(1, -1)}
               </code>
@@ -95,32 +94,32 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
 
     if (line.startsWith("### ")) {
       renderedElements.push(
-        <h3 key={i} className="text-base font-semibold text-slate-100 mt-4 mb-2">
+        <h3 key={i} className="text-xs font-bold text-slate-900 mt-3 mb-1">
           {renderFormattedText(line.slice(4))}
         </h3>
       );
     } else if (line.startsWith("## ")) {
       renderedElements.push(
-        <h2 key={i} className="text-lg font-bold text-slate-50 mt-5 mb-2 border-b border-slate-800 pb-1">
+        <h2 key={i} className="text-sm font-bold text-slate-900 mt-3 mb-1.5 border-b border-slate-200 pb-1">
           {renderFormattedText(line.slice(3))}
         </h2>
       );
     } else if (line.startsWith("# ")) {
       renderedElements.push(
-        <h1 key={i} className="text-xl font-bold text-white mt-6 mb-3">
+        <h1 key={i} className="text-base font-extrabold text-slate-950 mt-4 mb-2">
           {renderFormattedText(line.slice(2))}
         </h1>
       );
     } else if (line.startsWith("- ") || line.startsWith("* ")) {
       renderedElements.push(
-        <li key={i} className="text-slate-300 ml-4 list-disc text-sm leading-relaxed mb-1">
+        <li key={i} className="text-slate-700 ml-3.5 list-disc text-xs leading-relaxed mb-1">
           {renderFormattedText(line.slice(2))}
         </li>
       );
     } else if (/^\d+\.\s+/.test(line)) {
       const numMatch = line.match(/^(\d+\.)\s+(.*)/);
       renderedElements.push(
-        <li key={i} className="text-slate-300 ml-4 list-decimal text-sm leading-relaxed mb-1">
+        <li key={i} className="text-slate-700 ml-3.5 list-decimal text-xs leading-relaxed mb-1">
           {renderFormattedText(numMatch ? numMatch[2] : line)}
         </li>
       );
@@ -128,16 +127,16 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
       renderedElements.push(
         <blockquote
           key={i}
-          className="border-l-2 border-indigo-500 pl-3 my-2 text-slate-400 italic text-sm bg-slate-900/40 py-1 rounded-r"
+          className="border-l-2 border-blue-500 pl-2.5 my-2 text-slate-600 italic text-xs bg-blue-50/50 py-1 rounded-r"
         >
           {renderFormattedText(line.slice(2))}
         </blockquote>
       );
     } else if (line.trim().length === 0) {
-      renderedElements.push(<div key={i} className="h-2" />);
+      renderedElements.push(<div key={i} className="h-1.5" />);
     } else {
       renderedElements.push(
-        <p key={i} className="text-slate-300 text-sm leading-relaxed mb-2">
+        <p key={i} className="text-slate-700 text-xs leading-relaxed mb-1.5">
           {renderFormattedText(line)}
         </p>
       );
@@ -154,22 +153,22 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
     const body = rows.slice(1);
 
     return (
-      <div key={key} className="overflow-x-auto my-3 border border-slate-800 rounded-lg">
-        <table className="w-full text-xs text-left border-collapse">
-          <thead className="bg-slate-800/80 text-slate-200">
+      <div key={key} className="overflow-x-auto my-2 border border-slate-200 rounded-lg">
+        <table className="w-full text-[11px] text-left border-collapse">
+          <thead className="bg-slate-100 text-slate-800">
             <tr>
               {header.map((col, idx) => (
-                <th key={idx} className="px-3 py-2 border-b border-slate-700 font-semibold">
+                <th key={idx} className="px-2.5 py-1.5 border-b border-slate-200 font-semibold">
                   {renderFormattedText(col)}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800 bg-slate-900/50">
+          <tbody className="divide-y divide-slate-100 bg-white">
             {body.map((row, rIdx) => (
-              <tr key={rIdx} className="hover:bg-slate-800/30 transition-colors">
+              <tr key={rIdx} className="hover:bg-slate-50 transition-colors">
                 {row.map((cell, cIdx) => (
-                  <td key={cIdx} className="px-3 py-2 text-slate-300">
+                  <td key={cIdx} className="px-2.5 py-1.5 text-slate-700">
                     {renderFormattedText(cell)}
                   </td>
                 ))}
@@ -181,6 +180,5 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({
     );
   }
 
-  return <div className="prose-dark space-y-1">{renderedElements}</div>;
+  return <div className="prose-light space-y-0.5">{renderedElements}</div>;
 };
-

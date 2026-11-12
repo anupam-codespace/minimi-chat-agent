@@ -80,145 +80,137 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs"
     >
-      <div className="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-950 p-6 shadow-2xl relative">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl relative">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="absolute right-4 top-4 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors"
           title="Close Settings"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 h-3.5" />
         </button>
 
-        <h2 id="settings-modal-title" className="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
-          Minimi Agent Architecture & Configuration
+        <h2 id="settings-modal-title" className="font-doto text-base font-bold text-slate-900 mb-1">
+          Minimi Agent Telemetry & Settings
         </h2>
-        <p className="text-xs text-slate-400 mb-5">
+        <p className="text-xs text-slate-500 mb-5">
           Server-side provider adapters, isolation boundaries, and persistence telemetry.
         </p>
 
         {loading ? (
-          <div className="py-8 text-center text-xs text-slate-500">
+          <div className="py-8 text-center text-xs text-slate-400">
             Loading system telemetry...
           </div>
         ) : settings ? (
-          <div className="space-y-4 text-xs">
+          <div className="space-y-3.5 text-xs">
             {/* Persistence Layer */}
-            <div className="p-3 rounded-lg border border-slate-800 bg-slate-900/60">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="flex items-center gap-1.5 font-semibold text-slate-200">
-                  <Database className="w-4 h-4 text-indigo-400" />
+            <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/70">
+              <div className="flex items-center justify-between mb-1">
+                <span className="flex items-center gap-1.5 font-semibold text-slate-800">
+                  <Database className="w-4 h-4 text-blue-600" />
                   Persistence Layer
                 </span>
                 <span
                   className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                     settings.persistence.isPostgres
-                      ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
-                      : "bg-indigo-950 text-indigo-300 border border-indigo-800"
+                      ? "bg-emerald-100 text-emerald-800"
+                      : "bg-blue-100 text-blue-800"
                   }`}
                 >
                   {settings.persistence.adapter}
                 </span>
               </div>
-              <p className="text-slate-400 text-[11px] leading-relaxed">
+              <p className="text-slate-500 text-[11px] leading-relaxed">
                 {settings.persistence.isPostgres
                   ? "Connected to primary PostgreSQL database with relational indexing, JSONB snapshots, and full-text search."
-                  : "Using embedded persistent local store (.data/minimi.db.json) with atomic writes and full-text index."}
+                  : "Using embedded persistent local store (.data/minimi.db.json) with atomic writes."}
               </p>
             </div>
 
             {/* LLM Adapter */}
-            <div className="p-3 rounded-lg border border-slate-800 bg-slate-900/60">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="flex items-center gap-1.5 font-semibold text-slate-200">
-                  <Bot className="w-4 h-4 text-indigo-400" />
+            <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/70">
+              <div className="flex items-center justify-between mb-1">
+                <span className="flex items-center gap-1.5 font-semibold text-slate-800">
+                  <Bot className="w-4 h-4 text-blue-600" />
                   LLM Provider Adapter
                 </span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-200">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">
                   {settings.llm.provider.toUpperCase()} ({settings.llm.model})
                 </span>
               </div>
-              <div className="flex items-center gap-4 text-[11px] text-slate-400 mt-2">
-                <span className="flex items-center gap-1">
+              <div className="flex items-center gap-4 text-[11px] text-slate-500 mt-1.5">
+                <span>
                   Gemini API:{" "}
                   {settings.llm.geminiConfigured ? (
-                    <span className="text-emerald-400">Configured</span>
+                    <span className="text-emerald-600 font-medium">Configured</span>
                   ) : (
-                    <span className="text-slate-500">Unset</span>
+                    <span className="text-slate-400">Unset</span>
                   )}
                 </span>
-                <span className="flex items-center gap-1">
+                <span>
                   OpenAI API:{" "}
                   {settings.llm.openaiConfigured ? (
-                    <span className="text-emerald-400">Configured</span>
+                    <span className="text-emerald-600 font-medium">Configured</span>
                   ) : (
-                    <span className="text-slate-500">Unset</span>
+                    <span className="text-slate-400">Unset</span>
                   )}
                 </span>
               </div>
             </div>
 
             {/* Web Search Adapter */}
-            <div className="p-3 rounded-lg border border-slate-800 bg-slate-900/60">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="flex items-center gap-1.5 font-semibold text-slate-200">
-                  <Search className="w-4 h-4 text-indigo-400" />
+            <div className="p-3 rounded-xl border border-slate-200 bg-slate-50/70">
+              <div className="flex items-center justify-between mb-1">
+                <span className="flex items-center gap-1.5 font-semibold text-slate-800">
+                  <Search className="w-4 h-4 text-blue-600" />
                   Web Search Engine
                 </span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-200">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">
                   {settings.search.provider.toUpperCase()}
                 </span>
               </div>
-              <div className="flex items-center gap-4 text-[11px] text-slate-400 mt-2">
+              <div className="flex items-center gap-4 text-[11px] text-slate-500 mt-1.5">
                 <span>
                   Tavily:{" "}
                   {settings.search.tavilyConfigured ? (
-                    <span className="text-emerald-400">Active</span>
+                    <span className="text-emerald-600 font-medium">Active</span>
                   ) : (
-                    <span className="text-slate-500">Unset</span>
+                    <span className="text-slate-400">Unset</span>
                   )}
                 </span>
                 <span>
-                  Brave:{" "}
-                  {settings.search.braveConfigured ? (
-                    <span className="text-emerald-400">Active</span>
-                  ) : (
-                    <span className="text-slate-500">Unset</span>
-                  )}
-                </span>
-                <span>
-                  DuckDuckGo: <span className="text-emerald-400">Ready</span>
+                  DuckDuckGo: <span className="text-emerald-600 font-medium">Ready</span>
                 </span>
               </div>
             </div>
 
             {/* User Session & Timezone */}
-            <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-400">
-              <div className="p-2.5 rounded-lg border border-slate-800 bg-slate-900/40">
-                <span className="text-slate-500 block mb-0.5">User Identity Isolation:</span>
-                <span className="font-mono text-slate-200">{settings.user.defaultUserId}</span>
+            <div className="grid grid-cols-2 gap-2 text-[11px]">
+              <div className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <span className="text-slate-400 block mb-0.5">User Identity:</span>
+                <span className="font-mono text-slate-700">{settings.user.defaultUserId}</span>
               </div>
-              <div className="p-2.5 rounded-lg border border-slate-800 bg-slate-900/40">
-                <span className="text-slate-500 block mb-0.5">Resolved Timezone:</span>
-                <span className="font-mono text-slate-200">{settings.user.defaultTimezone}</span>
+              <div className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <span className="text-slate-400 block mb-0.5">Timezone:</span>
+                <span className="font-mono text-slate-700">{settings.user.defaultTimezone}</span>
               </div>
             </div>
 
-            {/* Seed Test Scenarios Action */}
-            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+            {/* Seed Benchmark Action */}
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
               <div>
-                <span className="font-semibold text-slate-200 block">
+                <span className="font-semibold text-slate-800 block text-xs">
                   Seed Test Benchmark Data
                 </span>
-                <span className="text-[10px] text-slate-500">
-                  Populates Test 1 (Monday CRM), Test 2 (Nov 3), and Test 3 (Hosting)
+                <span className="text-[10px] text-slate-400">
+                  Populates Monday CRM, 3 Nov, and Postgres hosting
                 </span>
               </div>
               <button
                 onClick={handleSeed}
                 disabled={seeding}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-colors disabled:opacity-50"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${seeding ? "animate-spin" : ""}`} />
                 {seeding ? "Seeding..." : "Seed Scenarios"}
@@ -226,14 +218,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
 
             {seedSuccess && (
-              <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/40 p-2 rounded border border-emerald-800">
+              <div className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 p-2 rounded-lg border border-emerald-200">
                 <CheckCircle2 className="w-4 h-4" />
                 Benchmark conversations and evidence snapshots successfully seeded!
               </div>
             )}
           </div>
         ) : (
-          <div className="flex items-center gap-2 text-rose-400 text-xs py-4">
+          <div className="flex items-center gap-2 text-rose-600 text-xs py-4">
             <ShieldAlert className="w-4 h-4" />
             Unable to retrieve server telemetry.
           </div>
@@ -242,4 +234,3 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     </div>
   );
 };
-

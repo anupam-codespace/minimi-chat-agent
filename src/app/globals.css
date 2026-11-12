@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #090d16;
-  --foreground: #f8fafc;
-  --border: #1e293b;
+  --background: #edf5ff;
+  --foreground: #0f172a;
 }
 
 .doto-minimi,
@@ -14,21 +13,27 @@
   font-optical-sizing: auto;
   font-weight: 601;
   font-style: normal;
-  font-variation-settings:
-    "ROND" 100;
+  font-variation-settings: "ROND" 100;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #f1f5f9;
+  color: #0f172a;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden;
+}
+
+/* Sky gradient canvas matching reference screenshot */
+.sky-gradient-bg {
+  background: linear-gradient(180deg, #ffffff 0%, #edf5ff 32%, #d6ebfe 68%, #b9dffe 100%);
 }
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -36,103 +41,103 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: rgba(148, 163, 184, 0.5);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: rgba(100, 116, 139, 0.7);
 }
 
 /* Markdown styling inside assistant message */
-.prose-dark {
-  color: #e2e8f0;
-  line-height: 1.7;
-}
-
-.prose-dark h1,
-.prose-dark h2,
-.prose-dark h3,
-.prose-dark h4 {
-  color: #f8fafc;
-  font-weight: 600;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.prose-dark h2 {
-  font-size: 1.25rem;
-  border-bottom: 1px solid #1e293b;
-  padding-bottom: 0.35rem;
-}
-
-.prose-dark h3 {
-  font-size: 1.1rem;
-}
-
-.prose-dark p {
-  margin-bottom: 0.85rem;
-}
-
-.prose-dark ul,
-.prose-dark ol {
-  margin-left: 1.25rem;
-  margin-bottom: 0.85rem;
-}
-
-.prose-dark li {
-  margin-bottom: 0.25rem;
-}
-
-.prose-dark code {
-  background: #1e293b;
-  color: #a5b4fc;
-  padding: 0.15rem 0.4rem;
-  border-radius: 0.25rem;
-  font-size: 0.875em;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
-.prose-dark pre {
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  padding: 0.85rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  margin-bottom: 1rem;
-}
-
-.prose-dark blockquote {
-  border-left: 3px solid #6366f1;
-  padding-left: 0.85rem;
-  color: #94a3b8;
-  font-style: italic;
-  margin-bottom: 0.85rem;
-}
-
-.prose-dark table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1rem 0;
+.prose-light {
+  color: #1e293b;
+  line-height: 1.65;
   font-size: 0.875rem;
 }
 
-.prose-dark th {
-  background: #1e293b;
-  color: #f1f5f9;
+.prose-light h1,
+.prose-light h2,
+.prose-light h3,
+.prose-light h4 {
+  color: #0f172a;
+  font-weight: 700;
+  margin-top: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.prose-light h2 {
+  font-size: 1.15rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.25rem;
+}
+
+.prose-light h3 {
+  font-size: 1rem;
+}
+
+.prose-light p {
+  margin-bottom: 0.65rem;
+}
+
+.prose-light ul,
+.prose-light ol {
+  margin-left: 1.15rem;
+  margin-bottom: 0.65rem;
+}
+
+.prose-light li {
+  margin-bottom: 0.2rem;
+}
+
+.prose-light code {
+  background: #e2e8f0;
+  color: #2563eb;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.prose-light pre {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.prose-light blockquote {
+  border-left: 3px solid #3b82f6;
+  padding-left: 0.75rem;
+  color: #475569;
+  font-style: italic;
+  margin-bottom: 0.65rem;
+}
+
+.prose-light table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.8rem;
+}
+
+.prose-light th {
+  background: #f1f5f9;
+  color: #1e293b;
   font-weight: 600;
-  padding: 0.6rem 0.85rem;
+  padding: 0.5rem 0.65rem;
   text-align: left;
-  border: 1px solid #334155;
+  border: 1px solid #cbd5e1;
 }
 
-.prose-dark td {
-  padding: 0.6rem 0.85rem;
-  border: 1px solid #334155;
-  color: #cbd5e1;
+.prose-light td {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #e2e8f0;
+  color: #334155;
 }
 
-.prose-dark tr:nth-child(even) {
-  background: rgba(30, 41, 59, 0.4);
+.prose-light tr:nth-child(even) {
+  background: rgba(241, 245, 249, 0.6);
 }
-
