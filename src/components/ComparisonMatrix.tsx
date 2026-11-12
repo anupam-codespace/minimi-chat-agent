@@ -1,18 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { HistoricalComparison, ComparisonStatus } from "@/types";
-import { CheckCircle2, AlertCircle, HelpCircle, ExternalLink } from "lucide-react";
+import { CheckCircle2, AlertCircle, HelpCircle, ExternalLink, IndianRupee } from "lucide-react";
 
 interface ComparisonMatrixProps {
   comparison: HistoricalComparison;
   onSourceClick?: (url: string) => void;
 }
 
+// Convert USD to INR (approximate baseline rate for comparison context: 1 USD = 86.5 INR)
+function formatWithRupee(value: string | null, enableRupee: boolean): string {
+  if (!value) return "—";
+  if (!enableRupee) return value;
+  if (value.includes("₹") || value.includes("INR")) return value;
+
+  // Find occurrences of $amount and augment with Rupee equivalent
+  return value.replace(/\$([0-9,]+(?:\.[0-9]+)?)/g, (match, p1) => {
+    const num = parseFloat(p1.replace(/,/g, ""));
+    if (isNaN(num)) return match;
+    const inr = Math.round(num * 86.5).toLocaleString("en-IN");
+    return `${match} (₹${inr})`;
+  });
+}
+
 export const ComparisonMatrix: React.FC<ComparisonMatrixProps> = ({
   comparison,
   onSourceClick,
 }) => {
+  const [showRupee, setShowRupee] = useState(true);
+
   const getStatusBadge = (status: ComparisonStatus) => {
     switch (status) {
       case "unchanged":
@@ -60,77 +77,94 @@ export const ComparisonMatrix: React.FC<ComparisonMatrixProps> = ({
   };
 
   return (
-    <div className="my-2.5 rounded-xl border border-blue-200/80 bg-white/95 p-3 shadow-xs">
+    <div className="my-3 rounded-xl border border-blue-200/80 bg-white/95 p-3.5 shadow-xs">
       {/* Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-slate-100 pb-2 mb-2">
-        <div className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5 mb-2.5">
+        <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-          <h4 className="font-doto text-[11px] font-bold text-slate-800 uppercase tracking-wider">
+          <h4 className="font-doto text-xs font-bold text-slate-800 uppercase tracking-wider">
             Temporal Comparison Matrix
           </h4>
         </div>
-        <div className="text-[10px] text-blue-700 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-full font-mono">
-          Baseline: {comparison.targetDatePhrase}
+
+        <div className="flex items-center gap-2">
+          {/* Rupee Toggle Button */}
+          <button
+            onClick={() => setShowRupee(!showRupee)}
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border transition-all ${
+              showRupee
+                ? "bg-blue-50 text-blue-700 border-blue-200"
+                : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+            }`}
+            title="Toggle Indian Rupee (₹ INR) currency conversion"
+          >
+            <IndianRupee className="w-2.5 h-2.5 text-blue-600" />
+            <span>₹ INR {showRupee ? "Active" : "Off"}</span>
+          </button>
+
+          <div className="text-[10px] text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-0.5 rounded-full font-mono">
+            Baseline: {comparison.targetDatePhrase}
+          </div>
         </div>
       </div>
 
-      <p className="text-[11px] text-slate-600 mb-2 leading-relaxed">{comparison.summary}</p>
+      <p className="text-xs text-slate-600 mb-3 leading-relaxed">{comparison.summary}</p>
 
       {/* Comparison Table */}
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table className="w-full text-[11px] text-left border-collapse">
+        <table className="w-full text-xs text-left border-collapse">
           <thead className="bg-slate-50 text-slate-700 border-b border-slate-200">
             <tr>
-              <th className="px-2.5 py-1.5 font-semibold">Entity</th>
-              <th className="px-2.5 py-1.5 font-semibold">Historical</th>
-              <th className="px-2.5 py-1.5 font-semibold">Current Verified</th>
-              <th className="px-2.5 py-1.5 font-semibold">Status</th>
+              <th className="px-3 py-2 font-semibold">Entity</th>
+              <th className="px-3 py-2 font-semibold">Historical Baseline</th>
+              <th className="px-3 py-2 font-semibold">Current Verified</th>
+              <th className="px-3 py-2 font-semibold">Status</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-slate-700">
             {comparison.items.map((item, idx) => (
               <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                <td className="px-2.5 py-1.5 font-medium">
+                <td className="px-3 py-2 font-medium">
                   <div className="flex flex-col">
                     <span className="font-semibold text-slate-900">{item.entity}</span>
-                    <span className="text-[9px] text-slate-400">{item.attribute}</span>
+                    <span className="text-[10px] text-slate-400">{item.attribute}</span>
                   </div>
                 </td>
-                <td className="px-2.5 py-1.5">
+                <td className="px-3 py-2">
                   <div className="flex flex-col">
-                    <span className="font-mono text-[10px] text-slate-800">
-                      {item.historicalValue || "—"}
+                    <span className="font-mono text-[11px] text-slate-800 font-medium">
+                      {formatWithRupee(item.historicalValue, showRupee)}
                     </span>
                     {item.historicalSource && (
                       <button
                         onClick={() => onSourceClick?.(item.historicalSource!)}
-                        className="inline-flex items-center gap-0.5 text-[9px] text-blue-600 hover:underline"
+                        className="inline-flex items-center gap-0.5 text-[10px] text-blue-600 hover:underline mt-0.5"
                       >
-                        Source <ExternalLink className="w-2 h-2" />
+                        Baseline source <ExternalLink className="w-2.5 h-2.5" />
                       </button>
                     )}
                   </div>
                 </td>
-                <td className="px-2.5 py-1.5">
+                <td className="px-3 py-2">
                   <div className="flex flex-col">
-                    <span className="font-mono text-[10px] text-emerald-600">
-                      {item.currentValue || "Unverified"}
+                    <span className="font-mono text-[11px] text-emerald-700 font-medium">
+                      {formatWithRupee(item.currentValue, showRupee) || "Unverified"}
                     </span>
                     {item.currentSource && (
                       <button
                         onClick={() => onSourceClick?.(item.currentSource!)}
-                        className="inline-flex items-center gap-0.5 text-[9px] text-blue-600 hover:underline"
+                        className="inline-flex items-center gap-0.5 text-[10px] text-blue-600 hover:underline mt-0.5"
                       >
-                        Live source <ExternalLink className="w-2 h-2" />
+                        Live source <ExternalLink className="w-2.5 h-2.5" />
                       </button>
                     )}
                   </div>
                 </td>
-                <td className="px-2.5 py-1.5">
-                  <div className="flex flex-col gap-0.5">
+                <td className="px-3 py-2">
+                  <div className="flex flex-col gap-1">
                     {getStatusBadge(item.status)}
                     {item.notes && (
-                      <span className="text-[9px] text-slate-500 line-clamp-2">
+                      <span className="text-[10px] text-slate-500 line-clamp-2">
                         {item.notes}
                       </span>
                     )}
@@ -143,8 +177,8 @@ export const ComparisonMatrix: React.FC<ComparisonMatrixProps> = ({
       </div>
 
       {comparison.missingBaselineDisclosed && (
-        <div className="mt-2 p-2 rounded-lg bg-amber-50 border border-amber-200/80 text-[10px] text-amber-800 flex items-start gap-1.5">
-          <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+        <div className="mt-2.5 p-2.5 rounded-lg bg-amber-50 border border-amber-200/80 text-[11px] text-amber-800 flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <span>
             <strong>Formal Disclosure:</strong> Historical baseline is partial or absent. Missing evidence is never interpreted as proof of unchanged state.
           </span>

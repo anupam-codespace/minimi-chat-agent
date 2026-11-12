@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mic, ArrowUp, Loader2, Sparkles, Database, History, Search } from "lucide-react";
+import { Mic, ArrowUp, Loader2, Database, History, Search, Clock } from "lucide-react";
 
 interface InputAreaProps {
   onSendMessage: (message: string) => void;
@@ -32,37 +32,37 @@ export const InputArea: React.FC<InputAreaProps> = ({
 
   return (
     <div className="w-full max-w-3xl mx-auto px-3 sm:px-6 pb-3 sm:pb-4 pt-2 z-20 shrink-0">
-      {/* Desktop Quick Shortcuts (Hidden on small mobile screens to keep it ultra-clean) */}
+      {/* Desktop Quick Shortcuts */}
       <div className="hidden sm:flex items-center justify-center gap-2 mb-2 overflow-x-auto py-0.5 no-scrollbar">
         <button
           type="button"
           onClick={() =>
             onSendMessage(
-              "On Monday we shortlisted 5 CRM tools for a 20-person sales team. Has any of them changed pricing or shipped something big since?"
+              "On Monday we shortlisted 5 CRM tools for a 20-person sales team. Has any of them changed pricing in INR (₹) or USD ($) since?"
             )
           }
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 hover:bg-white text-slate-700 hover:text-blue-600 border border-slate-200/80 shadow-2xs backdrop-blur-xs transition-all hover:scale-[1.01] shrink-0"
         >
-          <History className="w-3 h-3 text-amber-500" />
-          <span>CRM Pricing Delta</span>
+          <History className="w-3 h-3 text-blue-500" />
+          <span>CRM Pricing Delta (₹/$)</span>
         </button>
         <button
           type="button"
           onClick={() =>
             onSendMessage(
-              "What did I ask you on 3 November? Is your answer still correct today?"
+              "What did I ask you on 3 November about AI model pricing? Is your answer still correct today in ₹ and $?"
             )
           }
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 hover:bg-white text-slate-700 hover:text-blue-600 border border-slate-200/80 shadow-2xs backdrop-blur-xs transition-all hover:scale-[1.01] shrink-0"
         >
-          <Sparkles className="w-3 h-3 text-blue-500" />
+          <Clock className="w-3 h-3 text-amber-500" />
           <span>3 Nov Model Pricing</span>
         </button>
         <button
           type="button"
           onClick={() =>
             onSendMessage(
-              "Last Tuesday I asked you about Postgres hosting. Has any pricing changed since then?"
+              "Last Tuesday I asked you about Postgres hosting. Has any pricing changed in ₹ or $ since then?"
             )
           }
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 hover:bg-white text-slate-700 hover:text-blue-600 border border-slate-200/80 shadow-2xs backdrop-blur-xs transition-all hover:scale-[1.01] shrink-0"
@@ -74,13 +74,13 @@ export const InputArea: React.FC<InputAreaProps> = ({
           type="button"
           onClick={() =>
             onSendMessage(
-              "What are the latest pricing tiers and rate limits for Claude 3.5 Sonnet vs GPT-4o today?"
+              "Compare Supabase vs Neon vs AWS RDS pricing in INR (₹) and USD ($) for 50GB storage and compute limits"
             )
           }
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 hover:bg-white text-slate-700 hover:text-blue-600 border border-slate-200/80 shadow-2xs backdrop-blur-xs transition-all hover:scale-[1.01] shrink-0"
         >
           <Search className="w-3 h-3 text-emerald-500" />
-          <span>Live Web Search</span>
+          <span>Live Web Research</span>
         </button>
       </div>
 
@@ -94,7 +94,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask anything... (e.g. 'Compare CRM pricing since Monday' or 'Search latest AI models')"
+          placeholder="Ask anything... (e.g. 'Compare CRM pricing since Monday in ₹' or 'Search latest AI models')"
           disabled={isLoading}
           className="w-full bg-transparent text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none pr-2 sm:pr-3"
         />
@@ -128,12 +128,12 @@ export const InputArea: React.FC<InputAreaProps> = ({
             onClick={onOpenSettings}
             className="text-blue-600 underline font-medium hover:text-blue-700 cursor-pointer"
           >
-            Try it on web
+            Telemetry & Settings
           </button>
         </span>
         <span className="hidden sm:inline text-slate-300">•</span>
         <span className="hidden sm:inline text-[11px] text-slate-400 font-mono">
-          Minimi v1.0.0 (Zero-Fabrication Guard Active)
+          Minimi v1.0.0 (Zero-Fabrication Guard · ₹ INR Support Active)
         </span>
       </div>
     </div>

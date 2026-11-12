@@ -7,11 +7,11 @@ import { ComparisonMatrix } from "./ComparisonMatrix";
 import {
   Loader2,
   Mic,
-  GraduationCap,
-  Rocket,
+  TrendingUp,
+  Clock,
+  Database,
+  Search,
   Sparkles,
-  Compass,
-  Bot,
   ExternalLink,
 } from "lucide-react";
 
@@ -65,110 +65,110 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
             {/* Top Greeting Pill */}
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-600 mb-2">
               <span className="w-6 h-6 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-                <Bot className="w-3.5 h-3.5" />
+                <Sparkles className="w-3.5 h-3.5" />
               </span>
               <span>Good afternoon, Samson</span>
             </div>
 
             {/* Bold Headline */}
             <h2 className="font-doto text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 text-center tracking-tight mb-6">
-              How can I help?
+              How can I help you research today?
             </h2>
 
-            {/* 2x2 Clean Vector Icon Prompt Cards */}
+            {/* 2x2 Dedicated Research Tool Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
-              {/* Card 1: Top Left */}
+              {/* Tool Card 1: CRM Pricing Delta */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
                     "On Monday we shortlisted 5 CRM tools for a 20-person sales team. Has any of them changed pricing or shipped something big since?"
                   )
                 }
-                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/90 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-xs border border-slate-200/80 hover:border-blue-400 hover:shadow-md transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="w-9 h-9 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 mb-3 group-hover:scale-105 transition-transform">
-                  <GraduationCap className="w-5 h-5" />
+                <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mb-3 group-hover:scale-105 transition-transform">
+                  <TrendingUp className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
-                    Practice an interview question with me
+                    CRM Pricing Delta (₹ / $)
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Temporal Benchmark 1: CRM pricing delta since Monday
+                  <div className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                    Verify pricing changes since Monday for our 5 shortlisted CRM platforms
                   </div>
                 </div>
               </button>
 
-              {/* Card 2: Top Right */}
+              {/* Tool Card 2: 3 Nov Model Pricing */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
                     "What did I ask you on 3 November? Is your answer still correct today?"
                   )
                 }
-                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/90 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-xs border border-slate-200/80 hover:border-amber-400 hover:shadow-md transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mb-3 group-hover:scale-105 transition-transform">
-                  <Rocket className="w-5 h-5" />
+                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 mb-3 group-hover:scale-105 transition-transform">
+                  <Clock className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
-                    What drill should I try next?
+                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-amber-600 transition-colors">
+                    3 Nov Model Pricing Audit
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Temporal Benchmark 2: 3 Nov model pricing validity
+                  <div className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                    Retrieve 3 Nov LLM discussion and verify if pricing and token rates hold today
                   </div>
                 </div>
               </button>
 
-              {/* Card 3: Bottom Left */}
+              {/* Tool Card 3: Postgres Hosting Delta */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
                     "Last Tuesday I asked you about Postgres hosting. Has any pricing changed since then?"
                   )
                 }
-                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/90 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-xs border border-slate-200/80 hover:border-indigo-400 hover:shadow-md transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="w-9 h-9 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center text-violet-600 mb-3 group-hover:scale-105 transition-transform">
-                  <Sparkles className="w-5 h-5" />
+                <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-3 group-hover:scale-105 transition-transform">
+                  <Database className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
-                    Tips for sounding more confident
+                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-indigo-600 transition-colors">
+                    Postgres Cloud Hosting Delta
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Temporal Benchmark 3: Postgres hosting delta since last Tuesday
+                  <div className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                    Compare managed PostgreSQL storage and compute pricing delta since last Tuesday
                   </div>
                 </div>
               </button>
 
-              {/* Card 4: Bottom Right */}
+              {/* Tool Card 4: Multi-Cloud Live Web Research */}
               <button
                 onClick={() =>
                   onSelectSuggestion(
-                    "Compare Supabase vs Neon vs AWS RDS pricing and features for 50GB storage"
+                    "Compare Supabase vs Neon vs AWS RDS pricing in INR (₹) and USD ($) for 50GB storage and compute limits"
                   )
                 }
-                className="text-left bg-white/85 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200/80 hover:border-blue-300 transition-all group flex flex-col justify-between min-h-[110px]"
+                className="text-left bg-white/90 hover:bg-white active:scale-[0.99] backdrop-blur-md rounded-2xl p-4 shadow-xs border border-slate-200/80 hover:border-emerald-400 hover:shadow-md transition-all group flex flex-col justify-between min-h-[110px]"
               >
-                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 mb-3 group-hover:scale-105 transition-transform">
-                  <Compass className="w-5 h-5" />
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-3 group-hover:scale-105 transition-transform">
+                  <Search className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
-                    How is my progress looking?
+                  <div className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-emerald-600 transition-colors">
+                    Live Web Research & Synthesis
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Multi-entity comparative web research & matrix synthesis
+                  <div className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                    Execute multi-provider live searches with verified citations and Rupee (₹) conversions
                   </div>
                 </div>
               </button>
             </div>
 
             {/* Intro text */}
-            <p className="text-[11px] text-slate-500 text-center max-w-sm mx-auto mt-6 leading-relaxed font-normal">
-              I am Echo, your AI research and temporal comparison assistant. Live web search and zero-hallucination verification are active.
+            <p className="text-[11px] text-slate-500 text-center max-w-md mx-auto mt-6 leading-relaxed font-normal">
+              Minimi is an autonomous AI web research and temporal comparison assistant. Live search verification, historical retrieval, and zero-fabrication citations are active.
             </p>
           </div>
         ) : null}

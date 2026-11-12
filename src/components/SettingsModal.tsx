@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Database, Bot, Search, RefreshCw, CheckCircle2, ShieldAlert } from "lucide-react";
+import { X, Database, Bot, Search, RefreshCw, CheckCircle2, ShieldAlert, IndianRupee } from "lucide-react";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -180,20 +180,26 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   )}
                 </span>
                 <span>
-                  DuckDuckGo: <span className="text-emerald-600 font-medium">Ready</span>
+                  DuckDuckGo: <span className="text-emerald-600 font-medium">Zero-Key Fallback Active</span>
                 </span>
               </div>
             </div>
 
-            {/* User Session & Timezone */}
-            <div className="grid grid-cols-2 gap-2 text-[11px]">
+            {/* User Session, Timezone & Rupee Currency */}
+            <div className="grid grid-cols-3 gap-2 text-[11px]">
               <div className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/50">
                 <span className="text-slate-400 block mb-0.5">User Identity:</span>
-                <span className="font-mono text-slate-700">{settings.user.defaultUserId}</span>
+                <span className="font-mono text-slate-700 truncate block">{settings.user.defaultUserId}</span>
               </div>
               <div className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/50">
                 <span className="text-slate-400 block mb-0.5">Timezone:</span>
                 <span className="font-mono text-slate-700">{settings.user.defaultTimezone}</span>
+              </div>
+              <div className="p-2.5 rounded-xl border border-blue-200 bg-blue-50/40">
+                <span className="text-blue-500 block mb-0.5 flex items-center gap-1">
+                  <IndianRupee className="w-3 h-3 text-blue-600" /> Currency:
+                </span>
+                <span className="font-semibold text-blue-800">₹ INR / $ USD</span>
               </div>
             </div>
 
