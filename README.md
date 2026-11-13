@@ -7,9 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
 Minimi is a production-quality, modular AI research assistant built with TypeScript, Next.js, and Node.js. It features live multi-provider web search, persistent relational conversation memory, and a temporal comparison engine capable of auditing time-sensitive claims, product shifts, and pricing updates across historical discussions.
-
 ---
-
 ## Key Capabilities
 
 - **Natural Multi-Turn Conversational AI**: Streaming Server-Sent Events (SSE) interface with markdown rendering, interactive citation pills, and context-aware follow-ups.
